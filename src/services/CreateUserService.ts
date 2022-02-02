@@ -4,21 +4,23 @@ import { User } from "../entities/User";
 
 type UserRequest = {
   name: string,
-  username: string
+  email: string,
+  password: string
 }
 
 export class CreateUserService {
 
-  async execute({ name, username }:UserRequest ): Promise<User | Error> {
+  async execute({ name, email, password }:UserRequest ): Promise<User | Error> {
     const repo = getRepository(User);
 
-    if (await repo.findOne({username})) {
+    if (await repo.findOne({email})) {
       return new Error("User already exists");
     }
 
     const user = repo.create({
       name,
-      username
+      email,
+      password
     });
 
     await repo.save(user);

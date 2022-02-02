@@ -1,14 +1,18 @@
 import { Request, Response } from "express";
 import { CreateUserService } from "../services/CreateUserService";
+import { genSalt, hash } from "bcrypt";
 
 export class CreateUserController {
 
   async handle(request:Request, response:Response) {
-    const { name, username } = request.body;
+    const { name, email, passwd } = request.body;
+
+    const salt = await genSalt(10);
+    const password  = await hash(passwd, salt);
 
     const service = new CreateUserService();
 
-    const result = await service.execute({name, username});
+    const result = await service.execute({ name, email, password });
 
     if (result instanceof Error) {
       return response.status(400).json(result.message);

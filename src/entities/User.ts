@@ -11,7 +11,10 @@ export class User {
   name: string;
 
   @Column({ unique: true })
-  username: string;
+  email: string;
+
+  @Column()
+  password: string;
 
   @OneToMany(() => Todo, todo => todo.user)
   todos: Todo[]
