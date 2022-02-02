@@ -5,14 +5,14 @@ import { genSalt, hash } from "bcrypt";
 export class CreateUserController {
 
   async handle(request:Request, response:Response) {
-    const { name, email, passwd } = request.body;
+    const { name, email, password } = request.body;
 
     const salt = await genSalt(10);
-    const password  = await hash(passwd, salt);
+    const passwordEncrypted  = await hash(password, salt);
 
     const service = new CreateUserService();
 
-    const result = await service.execute({ name, email, password });
+    const result = await service.execute(name, email, passwordEncrypted);
 
     if (result instanceof Error) {
       return response.status(400).json(result.message);
