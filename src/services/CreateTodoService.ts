@@ -6,18 +6,18 @@ import { User } from "../entities/User";
 export class CreateTodoService {
   
   async execute(title: string, description: string, userId: string): Promise<Todo> {
-    const repoTodo = getRepository(Todo);
-    const repoUser = getRepository(User);
+    const todoRepo = getRepository(Todo);
+    const userRepo = getRepository(User);
 
-    const user = await repoUser.findOne(userId);
+    const user = await userRepo.findOne(userId);
 
-    const todo = repoTodo.create({
+    const todo = todoRepo.create({
       title,
       description,
       user
     });
 
-    await repoTodo.save(todo);
+    await todoRepo.save(todo);
 
     return todo;
   }
